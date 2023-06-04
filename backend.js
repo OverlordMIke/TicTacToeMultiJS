@@ -6,6 +6,22 @@ const server = http.createServer(app)
 const { Server } = require('socket.io')
 const io = new Server(server)
 
+class GameBoard {
+    constructor() {
+        this.slot = [
+            "","","",
+            "","","",
+            "","",""
+        ]
+    }
+}
+
+const board = new GameBoard()
+
+function updateclientboards() {
+    io.emit('boardUpdate', board)
+}
+
 app.use(express.static('public'))
 
 app.get('/', (req, res) => {
@@ -14,6 +30,7 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
     console.log(`User Connected: ${socket.id}`)
+    updateclientboards()
     //io.emit('updatePlayers', multiplayers)
     // socket.emit() to send to just connecting player
 
@@ -24,6 +41,21 @@ io.on('connection', (socket) => {
     
     socket.on("connect_error", (err) => {
         console.log(`connect_error due to ${err.message}`);
+    })
+
+    socket.on('playerMove', (slotnum) => {
+        board.slot[slotnum-1] = "X"
+        updateclientboards()
+    })
+
+    socket.on('clearBoard', () => {
+        console.log("Board clear requested.")
+        board.slot = [
+            "","","",
+            "","","",
+            "","",""
+        ]
+        updateclientboards()
     })
   })
 
