@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .container {
+            width: 100vw;
+            height: 100vh;
+            font-family: "Montserrat", sans-serif;
+            font-weight: bold;
+            font-size: 20px;
+
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: 100px 1fr 1fr 1fr;
+
+            gap: 10px;
+
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            grid-column-start: 1;
+            grid-column-end: 3;
+        }
+
+        .button {
+            width: 100%;
+            height: 100%;
+
+            border-radius: 10%;
+
+            background-color: aliceblue;
+
+            font-family: "Montserrat", sans-serif;
+            font-weight: bold;
+            font-size: 20vw;
+        }
+
+        .button:hover {
+            background-color: rgb(202, 230, 255);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            Header
+        </div>
+        <div class="gameinfo">
+            Game Info
+        </div>
+        <div class="buttonone">
+            <button class="button" id="buttonone">O</button>
+        </div>
+        <div class="buttontwo">
+            <button class="button" id="buttontwo">X</button>
+        </div>
+        <div class="buttonthree">
+            <button class="button" id="buttonthree">O</button>
+        </div>
+        <div class="buttonfour">
+            <button class="button" id="buttonfour">X</button>
+        </div>
+        <div class="buttonfive">
+            <button class="button" id="buttonfive">O</button>
+        </div>
+        <div class="buttonsix">
+            <button class="button" id="buttonsix">X</button>
+        </div>
+        <div class="buttonseven">
+            <button class="button" id="buttonseven">O</button>
+        </div>
+        <div class="buttoneight">
+            <button class="button" id="buttoneight">X</button>
+        </div>
+        <div class="buttonnine">
+            <button class="button" id="buttonnine">O</button>
+        </div>
+    </div>
+</body>
+</html>
