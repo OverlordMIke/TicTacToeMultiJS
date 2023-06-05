@@ -1,9 +1,10 @@
 const socket = io()
 let buttons = []
+let tokeninfo
 
 document.addEventListener('DOMContentLoaded', () => {
     buttons = document.getElementsByClassName('button')
-    console.log(buttons)
+    tokeninfo = document.getElementById('token')
 })
 
 function playermove(slotnum) {
@@ -16,8 +17,11 @@ function clearboard() {
 
 socket.on('boardUpdate', (board) => {
     const slots = board.slot
-    console.log(typeof slots)
     slots.forEach((value, i) => {
         buttons[i].innerHTML = value
     })
+})
+
+socket.on('tokenInform', (token) => {
+    tokeninfo.innerHTML = `You are ${token}`
 })

@@ -9,6 +9,8 @@
     <style>
         * {
             box-sizing: border-box;
+            font-family: "Montserrat", sans-serif;
+            font-weight: bold;
         }
 
         body {
@@ -20,8 +22,7 @@
         .container {
             width: 100%;
             height: 100vh;
-            font-family: "Montserrat", sans-serif;
-            font-weight: bold;
+            
             font-size: 20px;
 
             display: grid;
@@ -37,6 +38,36 @@
 
         .header {
             grid-column: 1 / span 2;
+            
+            font-size: 7vh;
+        }
+
+        .gamearea {
+            grid-column: 1 / span 3;
+            grid-row: 2 / span 3;
+        }
+
+        .gameboard {
+            position: relative;
+            width: 75vh;
+        }
+
+        .gameboard:after {
+            content: "";
+            display: block;
+            padding-bottom: 100%;
+        }
+
+        .gameboard-content {
+            position: absolute;
+            
+            width: 100%;
+            height: 100%;
+            
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
         }
 
         .button {
@@ -47,9 +78,7 @@
 
             background-color: rgb(225, 237, 247);
 
-            font-family: "Montserrat", sans-serif;
-            font-weight: bold;
-            font-size: 15vh;
+            font-size: 12vh;
         }
 
         .button:hover {
@@ -62,37 +91,44 @@
 <body>
     <div class="container">
         <div class="header">
-            Header
+            Ticcy-Taccy-Toey
         </div>
         <div class="gameinfo">
             <button class="clearbutton" onclick="clearboard();">Clear Board</button>
+            <div id="token">You are X</div>
         </div>
-        <div class="buttonone">
-            <button class="button" id="buttonone" onclick="playermove(1);">O</button>
-        </div>
-        <div class="buttontwo">
-            <button class="button" id="buttontwo" onclick="playermove(2);">X</button>
-        </div>
-        <div class="buttonthree">
-            <button class="button" id="buttonthree" onclick="playermove(3);">O</button>
-        </div>
-        <div class="buttonfour">
-            <button class="button" id="buttonfour" onclick="playermove(4);">X</button>
-        </div>
-        <div class="buttonfive">
-            <button class="button" id="buttonfive" onclick="playermove(5);">O</button>
-        </div>
-        <div class="buttonsix">
-            <button class="button" id="buttonsix" onclick="playermove(6);">X</button>
-        </div>
-        <div class="buttonseven">
-            <button class="button" id="buttonseven" onclick="playermove(7);">O</button>
-        </div>
-        <div class="buttoneight">
-            <button class="button" id="buttoneight" onclick="playermove(8);">X</button>
-        </div>
-        <div class="buttonnine">
-            <button class="button" id="buttonnine" onclick="playermove(9);">O</button>
+        <div class="gamearea">
+            <div class="gameboard">
+                <div class="gameboard-content">
+                    <div class="buttonone">
+                        <button class="button" id="buttonone" onclick="playermove(1);">O</button>
+                    </div>
+                    <div class="buttontwo">
+                        <button class="button" id="buttontwo" onclick="playermove(2);">X</button>
+                    </div>
+                    <div class="buttonthree">
+                        <button class="button" id="buttonthree" onclick="playermove(3);">O</button>
+                    </div>
+                    <div class="buttonfour">
+                        <button class="button" id="buttonfour" onclick="playermove(4);">X</button>
+                    </div>
+                    <div class="buttonfive">
+                        <button class="button" id="buttonfive" onclick="playermove(5);">O</button>
+                    </div>
+                    <div class="buttonsix">
+                        <button class="button" id="buttonsix" onclick="playermove(6);">X</button>
+                    </div>
+                    <div class="buttonseven">
+                        <button class="button" id="buttonseven" onclick="playermove(7);">O</button>
+                    </div>
+                    <div class="buttoneight">
+                        <button class="button" id="buttoneight" onclick="playermove(8);">X</button>
+                    </div>
+                    <div class="buttonnine">
+                        <button class="button" id="buttonnine" onclick="playermove(9);">O</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
