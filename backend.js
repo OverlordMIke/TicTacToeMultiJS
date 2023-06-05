@@ -15,23 +15,53 @@ class GameBoard {
             "","",""
         ]
     }
+
+    clear() {
+        this.slot = [
+            "","","",
+            "","","",
+            "","",""
+        ]
+    }
 }
 
+class GameState {
+    constructor() {
+        this.gamerunning = false
+        this.activeplayer = Math.random < 0.5 ? "X" : "O"
+        this.availabletokens = ["X", "O"]
+    }
+}
+
+class Player {
+    constructor(t) {
+        this.token = t
+    }
+}
+
+const game = new GameState()
 const board = new GameBoard()
 const players = {}
-let availabletokens = ["X", "O"]
 
 // Send updated board state to all players.
 function updateclientboards() {
     io.emit('boardUpdate', board)
 }
 
+// Send updated game state to all players.
+function updateclientstate() {
+    io.emit('gamestateUpdate', game)
+}
+
 function changeturns() {
-    Object.keys(players).forEach((key) => {
-        if (players[key].token != "not playing") {
-            players[key].canplay = !players[key].canplay
-        }
-    })
+    switch (game.activeplayer) {
+        case "X":
+            game.activeplayer = "O"
+            break
+        case "O":
+            game.activeplayer = "X"
+    }
+    updateclientstate()
 }
 
 app.use(express.static('public'))
@@ -42,28 +72,16 @@ app.get('/', (req, res) => {
 
 // When a player connects
 io.on('connection', (socket) => {
-    // Assign O if first player on server, otherwise set based on existing player.
-    if (availabletokens.length == 0) {
-        players[socket.id] = {
-            token: "not playing",
-            canplay: false
-        }
+    if (game.availabletokens.length == 0) {
+        players[socket.id] = new Player("not playing")
     } else {
-        let t = availabletokens.splice(-1)
-        let b
-        if (t == "O") { // this is bad : it sets Os canplay as true if they refresh during Xs turn : don't set canplay as true at connection : make a gamestart function that handles it
-            b = true
-        } else {
-            b = false
-        }
-        players[socket.id] = {
-            token: t,
-            canplay: b
-        }
+        let t = game.availabletokens.splice(-1)[0]
+        players[socket.id] = new Player(t)
     }
 
     socket.emit('tokenInform', players[socket.id].token) // Tell the player what they are.
     updateclientboards()
+    updateclientstate()
     console.log(`\n${socket.id}: Connected`)
     console.log('Connected Players:')
     console.log(Object.keys(players))
@@ -71,7 +89,7 @@ io.on('connection', (socket) => {
     // When player disconnects
     socket.on('disconnect', (reason) => {
         if (players[socket.id].token !== "not playing") {
-            availabletokens.push(players[socket.id].token)
+            game.availabletokens.push(players[socket.id].token)
         }
         delete players[socket.id]
         console.log(`\n${socket.id}: Disconnected: ${reason}`)
@@ -86,7 +104,7 @@ io.on('connection', (socket) => {
 
     // When a player plays a move
     socket.on('playerMove', (slotnum) => {
-        if (board.slot[slotnum-1] === "" && players[socket.id].canplay) {
+        if (board.slot[slotnum-1] === "" && players[socket.id].token === game.activeplayer) {
             board.slot[slotnum-1] = players[socket.id].token
             updateclientboards()
             changeturns()
@@ -95,12 +113,16 @@ io.on('connection', (socket) => {
 
     // When a player clears the board
     socket.on('clearBoard', () => {
-        board.slot = [
-            "","","",
-            "","","",
-            "","",""
-        ]
+        switch (players[socket.id].token) {
+            case "X":
+                game.activeplayer = "O"
+                break
+            case "O":
+                game.activeplayer = "X"
+        }
+        board.clear()
         updateclientboards()
+        updateclientstate()
         console.log(`\n${socket.id}: Cleared board`)
     })
   })
